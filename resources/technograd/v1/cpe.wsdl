@@ -1,0 +1,382 @@
+<wsdl:definitions name="cpe" targetNamespace="http://127.0.0.1:38900/siberia/technograd/1/cpe"
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex"
+                  xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy"
+                  xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://127.0.0.1:38900/siberia/technograd/1/cpe"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl">
+    <wsdl:types>
+        <xsd:schema elementFormDefault="qualified" targetNamespace="http://127.0.0.1:38900/siberia/technograd/1/cpe">
+            <xsd:import namespace="http://www.w3.org/2001/XMLSchema"/>
+            <xsd:element name="getOrderEquipmentsRequest" type="tns:getOrderEquipmentsRequest"/>
+            <xsd:complexType name="getOrderEquipmentsRequest">
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="OrderId" type="xsd:string"/>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="DataType" type="xsd:string"/>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="WorkerId" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:element name="getOrderEquipmentsResponse" type="tns:getOrderEquipmentsResponse"/>
+            <xsd:complexType name="getOrderEquipmentsResponse">
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="Equipments" type="tns:ArrayOfEquipment"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+
+            <xsd:element name="getEquipmentInfoRequest" type="tns:getEquipmentInfoRequest"/>
+            <xsd:complexType name="getEquipmentInfoRequest">
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="ParamsType" type="xsd:string"/>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="ParamsValue" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:element name="getEquipmentInfoResponse" type="tns:getEquipmentInfoResponse"/>
+            <xsd:complexType name="getEquipmentInfoResponse">
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="Equipment" type="tns:Equipment"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+
+            <xsd:element name="getWarehouseEquipmentsRequest" type="tns:getWarehouseEquipmentsRequest"/>
+            <xsd:complexType name="getWarehouseEquipmentsRequest">
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="WarehouseId" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:element name="getWarehouseEquipmentsResponse" type="tns:getWarehouseEquipmentsResponse"/>
+            <xsd:complexType name="getWarehouseEquipmentsResponse">
+                <xsd:sequence>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="EquipmentsShort" nillable="true"
+                                 type="tns:ArrayOfEquipmentShort"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+
+            <xsd:complexType name="ArrayOfEquipment">
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="unbounded" name="Equipment" nillable="true"
+                                 type="tns:Equipment"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+
+            <xsd:complexType name="Equipment">
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="Characteristics" type="tns:ArrayOfCharacteristic"/>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="EquipmentId" nillable="true" type="xsd:string"/>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="TypeName" nillable="true" type="xsd:string"/>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="NomenclatureCode" nillable="true" type="xsd:string"/>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="NomenclatureName" nillable="true" type="xsd:string"/>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="Model" type="xsd:string"/>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="DataType" nillable="true" type="xsd:string"/>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="TransferCondition" type="xsd:string"/>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="State" nillable="true" type="xsd:string"/>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="Status" nillable="true" type="xsd:string"/>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="SerialNumber" nillable="true" type="xsd:string"/>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="SupplierGuarantee" type="xsd:string"/>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="ClientGuarantee" type="xsd:string"/>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="ClientGuaranteeEndDate" nillable="true"
+                                 type="xsd:dateTime"/>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="ConsignmentName" type="xsd:string"/>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="ServicesId" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+
+            <xsd:complexType name="getActListRequest">
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="WorkerId" type="xsd:string"/>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="StartDate" type="xsd:dateTime"/>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="EndDate" type="xsd:dateTime"/>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="Type" type="xsd:string"/>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="Status" nillable="true" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:element name="getActListResponse" type="tns:getActListResponse"/>
+            <xsd:complexType name="getActListResponse">
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="Acts" type="tns:ArrayOfAct"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+
+            <xsd:complexType name="ArrayOfAct">
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="unbounded" name="Act" nillable="true"
+                                 type="tns:Act"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+
+            <xsd:complexType name="Act">
+                <xsd:sequence>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="ActId" nillable="true" type="xsd:string"/>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="ActName" nillable="true" type="xsd:string"/>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="Date" nillable="true" type="xsd:dateTime"/>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="Type" nillable="true" type="xsd:string"/>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="Status" type="xsd:string"/>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="SourceWarehouseId" nillable="true"
+                                 type="xsd:string"/>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="DestinationWarehouseId" type="xsd:string"/>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="ReadyNew" nillable="true" type="xsd:string"/>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="ReadyUsed" nillable="true" type="xsd:string"/>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="NotReady" nillable="true" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:complexType name="getActInfoRequest">
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="ActId" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:element name="getActInfoResponse" type="tns:getActInfoResponse"/>
+            <xsd:complexType name="getActInfoResponse">
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="EquipmentsShort" type="tns:ArrayOfEquipmentShort"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+
+            <xsd:complexType name="ArrayOfEquipmentShort">
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="unbounded" name="EquipmentShort" nillable="true"
+                                 type="tns:EquipmentShort"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+
+            <xsd:complexType name="EquipmentShort">
+                <xsd:sequence>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="EquipmentId" nillable="true" type="xsd:string"/>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="NomenclatureName" nillable="true" type="xsd:string"/>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="Model" type="xsd:string"/>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="State" nillable="true" type="xsd:string"/>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="Status" nillable="true" type="xsd:string"/>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="SerialNumber" nillable="true" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+
+            <xsd:complexType name="ArrayOfCharacteristic">
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="unbounded" name="Characteristic" nillable="true"
+                                 type="tns:Characteristic"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="Characteristic">
+                <xsd:sequence>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="CharacteristicName" nillable="true"
+                                 type="xsd:string"/>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="CharacteristicValue" nillable="true"
+                                 type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:element name="getWarehouseEquipmentsListRequest" type="tns:getWarehouseEquipmentsListRequest"/>
+            <xsd:complexType name="getWarehouseEquipmentsListRequest">
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="WarehouseId" type="xsd:string"/>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="WorkerId" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:element name="getWarehouseEquipmentsListResponse" type="tns:getWarehouseEquipmentsListResponse"/>
+            <xsd:complexType name="getWarehouseEquipmentsListResponse">
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="EquipmentCountList"
+                                 type="tns:ArrayOfEquipmentCount"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="ArrayOfEquipmentCount">
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="unbounded" name="EquipmentCount" nillable="true"
+                                 type="tns:EquipmentCount"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="EquipmentCount">
+                <xsd:sequence>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="EquipmentstateCounts" nillable="true"
+                                 type="tns:ArrayOfEquipmentstateCount"/>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="TypeId" nillable="true" type="xsd:string"/>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="TypeName" nillable="true" type="xsd:string"/>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="NomenclatureCode" nillable="true" type="xsd:string"/>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="Model" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="ArrayOfEquipmentstateCount">
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="unbounded" name="EquipmentstateCount" nillable="true"
+                                 type="tns:EquipmentstateCount"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="EquipmentstateCount">
+                <xsd:sequence>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="StateName" nillable="true" type="xsd:string"/>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="Condition" nillable="true" type="xsd:string"/>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="StateCount" nillable="true" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+
+            <xsd:complexType name="ArrayOfWarehouse">
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="unbounded" name="Warehouse" nillable="true"
+                                 type="tns:Warehouse"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="Warehouse">
+                <xsd:sequence>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="WarehouseId" nillable="true" type="xsd:string"/>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="WarehouseType" nillable="true" type="xsd:string"/>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="WarehouseName" type="xsd:string"/>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="WarehouseAddress" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:schema>
+    </wsdl:types>
+
+    <wsdl:message name="cpe_getOrderEquipments_InputMessage">
+        <wsdl:part name="getOrderEquipmentsRequest" element="tns:getOrderEquipmentsRequest"/>
+    </wsdl:message>
+    <wsdl:message name="cpe_getOrderEquipments_OutputMessage">
+        <wsdl:part name="getOrderEquipmentsResponse" element="tns:getOrderEquipmentsResponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="cpe_getEquipmentInfo_InputMessage">
+        <wsdl:part name="getEquipmentInfoRequest" element="tns:getEquipmentInfoRequest"/>
+    </wsdl:message>
+    <wsdl:message name="cpe_getEquipmentInfo_OutputMessage">
+        <wsdl:part name="getEquipmentInfoResponse" element="tns:getEquipmentInfoResponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="cpe_getWarehouseEquipments_InputMessage">
+        <wsdl:part name="getWarehouseEquipmentsRequest" element="tns:getWarehouseEquipmentsRequest"/>
+    </wsdl:message>
+    <wsdl:message name="cpe_getWarehouseEquipments_OutputMessage">
+        <wsdl:part name="getWarehouseEquipmentsResponse" element="tns:getWarehouseEquipmentsResponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="cpe_getWorkerWarehouses_InputMessage">
+        <wsdl:part name="getWorkerWarehousesRequest" element="tns:getWorkerWarehousesRequest"/>
+    </wsdl:message>
+    <wsdl:message name="cpe_getWorkerWarehouses_OutputMessage">
+        <wsdl:part name="getWorkerWarehousesResponse" element="tns:getWorkerWarehousesResponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="cpe_getWarehouseEquipmentsList_InputMessage">
+        <wsdl:part name="getWarehouseEquipmentsListRequest" element="tns:getWarehouseEquipmentsListRequest"/>
+    </wsdl:message>
+    <wsdl:message name="cpe_getWarehouseEquipmentsList_OutputMessage">
+        <wsdl:part name="getWarehouseEquipmentsListResponse" element="tns:getWarehouseEquipmentsListResponse"/>
+    </wsdl:message>
+
+    <wsdl:portType name="cpe">
+        <wsdl:operation name="getOrderEquipments">
+            <wsdl:input wsaw:Action="http://127.0.0.1:38900/siberia/technograd/1/cpe/cpe/getOrderEquipments"
+                        message="tns:cpe_getOrderEquipments_InputMessage"/>
+            <wsdl:output wsaw:Action="http://127.0.0.1:38900/siberia/technograd/1/cpe/cpe/getOrderEquipmentsResponse"
+                         message="tns:cpe_getOrderEquipments_OutputMessage"/>
+        </wsdl:operation>
+        <wsdl:operation name="getWarehouseEquipmentsList">
+            <wsdl:input wsaw:Action="http://127.0.0.1:38900/siberia/technograd/1/cpe/cpe/getWarehouseEquipmentsList"
+                        message="tns:cpe_getWarehouseEquipmentsList_InputMessage"/>
+            <wsdl:output wsaw:Action="http://127.0.0.1:38900/siberia/technograd/1/cpe/cpe/getWarehouseEquipmentsListResponse"
+                         message="tns:cpe_getWarehouseEquipmentsList_OutputMessage"/>
+        </wsdl:operation>
+        <wsdl:operation name="getWorkerWarehouses">
+            <wsdl:input wsaw:Action="http://127.0.0.1:38900/siberia/technograd/1/cpe/cpe/getWorkerWarehouses"
+                        message="tns:cpe_getWorkerWarehouses_InputMessage"/>
+            <wsdl:output wsaw:Action="http://127.0.0.1:38900/siberia/technograd/1/cpe/cpe/getWorkerWarehousesResponse"
+                         message="tns:cpe_getWorkerWarehouses_OutputMessage"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="getEquipmentInfo">
+            <wsdl:input wsaw:Action="http://localhost:38900/siberia/technograd/1/cpe/getEquipmentInfo"
+                        message="tns:cpe_getEquipmentInfo_InputMessage"/>
+            <wsdl:output wsaw:Action="http://localhost:38900/siberia/technograd/1/cpe/getEquipmentInfoResponse"
+                         message="tns:cpe_getEquipmentInfo_OutputMessage"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="getActList">
+            <wsdl:input wsaw:Action="http://127.0.0.1:38900/siberia/technograd/1/cpe/cpe/getActList"
+                        message="tns:cpe_getActList_InputMessage"/>
+            <wsdl:output wsaw:Action="http://127.0.0.1:38900/siberia/technograd/1/cpe/cpe/getActListResponse"
+                         message="tns:cpe_getActList_OutputMessage"/>
+        </wsdl:operation>
+        <wsdl:operation name="getActInfo">
+            <wsdl:input wsaw:Action="http://127.0.0.1:38900/siberia/technograd/1/cpe/cpe/getActInfo"
+                        message="tns:cpe_getActInfo_InputMessage"/>
+            <wsdl:output wsaw:Action="http://127.0.0.1:38900/siberia/technograd/1/cpe/cpe/getActInfoResponse"
+                         message="tns:cpe_getActInfo_OutputMessage"/>
+        </wsdl:operation>
+        <wsdl:operation name="getWarehouseEquipments">
+            <wsdl:input wsaw:Action="http://127.0.0.1:38900/siberia/technograd/1/cpe/cpe/getWarehouseEquipments"
+                        message="tns:cpe_getWarehouseEquipments_InputMessage"/>
+            <wsdl:output wsaw:Action="http://127.0.0.1:38900/siberia/technograd/1/cpe/cpe/getWarehouseEquipmentsResponse"
+                         message="tns:cpe_getWarehouseEquipments_OutputMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="https" type="tns:cpe">
+        <wsp:PolicyReference URI="#https_policy"/>
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="getOrderEquipments">
+            <soap:operation soapAction="http://127.0.0.1:38900/siberia/technograd/1/cpe/cpe/getOrderEquipments"
+                            style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getWarehouseEquipmentsList">
+            <soap:operation soapAction="http://127.0.0.1:38900/siberia/technograd/1/cpe/cpe/getWarehouseEquipmentsList"
+                            style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="getEquipmentInfo">
+            <soap:operation soapAction="http://localhost:38900/siberia/technograd/1/cpe/getEquipmentInfo"
+                            style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="getWarehouseEquipments">
+            <soap:operation soapAction="http://localhost:38900/siberia/technograd/1/cpe/getWarehouseEquipments"
+                            style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="getWorkerWarehouses">
+            <soap:operation soapAction="http://127.0.0.1:38900/siberia/technograd/1/cpe/cpe/getWorkerWarehouses"
+                            style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="cpe">
+        <wsdl:port name="https" binding="tns:https">
+            <soap:address location="http://localhost:38900/siberia/technograd/1/cpe/"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

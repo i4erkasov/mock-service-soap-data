@@ -1,0 +1,988 @@
+<wsdl:definitions name="oss" targetNamespace="http://tgrad.ru/WfmApi/DigitalInstaller" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://tgrad.ru/WfmApi/DigitalInstaller" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/">
+    <wsp:Policy wsu:Id="http_policy">
+        <wsp:ExactlyOne>
+            <wsp:All>
+                <http:NegotiateAuthentication xmlns:http="http://schemas.microsoft.com/ws/06/2004/policy/http"/>
+            </wsp:All>
+        </wsp:ExactlyOne>
+    </wsp:Policy>
+    <wsp:Policy wsu:Id="http_basic_policy">
+        <wsp:ExactlyOne>
+            <wsp:All>
+                <http:BasicAuthentication xmlns:http="http://schemas.microsoft.com/ws/06/2004/policy/http"/>
+            </wsp:All>
+        </wsp:ExactlyOne>
+    </wsp:Policy>
+    <wsdl:types>
+        <xsd:schema elementFormDefault="qualified" targetNamespace="http://tgrad.ru/WfmApi/DigitalInstaller">
+            <xsd:import namespace="http://www.w3.org/2001/XMLSchema"/>
+            <xsd:element name="checkWfmUserRequest" type="tns:checkWfmUserRequest"/>
+            <xsd:complexType name="checkWfmUserRequest">
+                <xsd:sequence>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="Login" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Логин исполнителя WFM</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="Password" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Пароль пользователя в WFM</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:element name="checkWfmUserResponse" type="tns:checkWfmUserResponse"/>
+            <xsd:complexType name="checkWfmUserResponse">
+                <xsd:sequence>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="RegionId" nillable="true" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Идентификатор регионального филиала или МРФ</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="WfmWorkerId" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Идентификатор исполнителя в Системе WFM</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="MobilePhone" nillable="true" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Номер мобильного телефона специалиста</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:element name="getOrdersRequest" type="tns:getOrdersRequest"/>
+            <xsd:complexType name="getOrdersRequest">
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="DepartmentIdList" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Список идентификаторов подразделений через разделитель</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="WorkerId" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Идентификатор исполнителя</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="StartDate" type="xsd:dateTime">
+                        <xsd:annotation>
+                            <xsd:documentation>Дата начала диапазона времени визита</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="EndDate" type="xsd:dateTime">
+                        <xsd:annotation>
+                            <xsd:documentation>Дата окончания диапазона времени визита</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="TechIdList" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Список идентификаторов технологий</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="OrderTypeIdList" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Список идентификаторов типов заданий(наряда)</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="ServiceTypeIdList" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Список идентификаторов типов сервисов</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="OrderStatusId" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Статус наряда</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="OrderCloseReasonId" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Идентификатор причины закрытия </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="Deferred" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Идентификатор причины закрытия </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="Assigned" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Признак назначения наряда на исполнителя </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="ReadyVisit" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Готовность к визиту(допустимые значение True\False)</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:element name="getOrdersResponse" type="tns:getOrdersResponse"/>
+            <xsd:complexType name="getOrdersResponse">
+                <xsd:sequence>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="OrderShortList" nillable="true" type="tns:OrderShortList">
+                        <xsd:annotation>
+                            <xsd:documentation>Массив структур сокращенной формы наряда</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="ArrayOfOrderShort">
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="unbounded" name="OrderShort" nillable="true" type="tns:OrderShort"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="OrderShort">
+                <xsd:sequence>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="OrderId" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Идентификатор задания(наряда) в системе WFM</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="OrderName" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Номер задания(наряда) в системе WFM</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="Address" type="tns:Address">
+                        <xsd:annotation>
+                            <xsd:documentation>Структура с данными по адресу визита</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="TechId" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Идентификатор технологии задания(наряда)</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="OrderTypeId" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Идентификатор типа наряда</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="ServiceTypeIdList" nillable="true" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Список идентификаторов</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="OrderStatusId" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Статус наряда</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="OrderCloseReasonId" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Идентификатор причины закрытия</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="StartIntervalVisite" type="xsd:dateTime">
+                        <xsd:annotation>
+                            <xsd:documentation>Дата и время начала визита</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="EndIntervalVisite" type="xsd:dateTime">
+                        <xsd:annotation>
+                            <xsd:documentation>Дата и время окончания визита</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="CrmRequestNumberList" nillable="true" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Список номеров обращений из систем</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="ControlTimeOrder" nillable="true" type="xsd:dateTime">
+                        <xsd:annotation>
+                            <xsd:documentation>Дата и время контрольного срока по наряду</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="ControlTimeRequest" nillable="true" type="xsd:dateTime">
+                        <xsd:annotation>
+                            <xsd:documentation>Дата и время контрольного срока по заявке</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="Client" type="tns:Client">
+                        <xsd:annotation>
+                            <xsd:documentation>Информация по клиенту</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="RestrictionText" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Текстовый признак наличия ограничений по заданию(наряду)</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="Deferred" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Отложено</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="Assigned" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>
+                                True – запрос нарядов, в которых один из исполнителей = переданному worker_id
+                                False – запрос нарядов, которые не назначены ни на одного работника и при этом доступны переданному worker_id в соответствии с его правами
+                            </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="ReadyVisit" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Готовность к визиту</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="Address">
+                <xsd:sequence>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="OrponId" nillable="true" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Идентификатор адреса визита (используется идентификатор адреса системы  ОРПОН)</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="AddressText" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Текстовое значение адреса визита</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="Location" type="tns:Location">
+                        <xsd:annotation>
+                            <xsd:documentation>GPS координаты</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="BuildingType" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Тип здания</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="CommentAddress" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Комментарий к адресу</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="Location">
+                <xsd:sequence>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="Latitude" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Широта в десятичном формате. Разделитель знаков – точка</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="Longitude" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Долгота в десятичном формате.  Разделитель знаков – точка</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="Client">
+                <xsd:sequence>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="TypeClient" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Тип клиента</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="Nls" nillable="true" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Номер лицевого счета</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="ContactName" nillable="true" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Имя контакта</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="ContactPhone" nillable="true" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Контактный телефон</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="ManagerName" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Менеджер клиента</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="ManagerPhone" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Контактный телефон менеджера Клиента</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="Vip" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Статус клиента(Допустимые значение True\False)</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="OrgName" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Название организации(Наименование клиента, заполняется только для клиентов не типа ФЛ )</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="Contract" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Номер договора ЮЛ. При отсутствии информации в системе Техноград тег не возвращается.</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:element name="getOrderStatusListResponse" type="tns:getOrderStatusListResponse"/>
+            <xsd:complexType name="getOrderStatusListResponse">
+                <xsd:sequence>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="OrderStatusList" type="tns:OrderStatusList">
+                        <xsd:annotation>
+                            <xsd:documentation>Cправочник статусов нарядов</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="ArrayOfOrderStatus">
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="unbounded" name="OrderStatus" nillable="true" type="tns:OrderStatus"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="OrderStatus">
+                <xsd:sequence>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="OrderStatusId" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Идентификатор статуса в системе WF</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="OrderStatusName" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Значение (имя) статуса в системе WFM</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:element name="getOrderTypeListResponse" type="tns:getOrderTypeListResponse"/>
+            <xsd:complexType name="getOrderTypeListResponse">
+                <xsd:sequence>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="OrderTypeList" type="tns:OrderTypeList">
+                        <xsd:annotation>
+                            <xsd:documentation>Cправочник типов заданий (нарядов)</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="ArrayOfOrderType">
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="unbounded" name="OrderTypeList" nillable="true" type="tns:OrderType"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="OrderType">
+                <xsd:sequence>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="OrderTypeId" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Идентификатор элемента справочника</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="OrderTypeName" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Наименование элемента справочника</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:element name="getRegionsResponse" type="tns:getRegionsResponse"/>
+            <xsd:complexType name="getRegionsResponse">
+                <xsd:sequence>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="RegionList" type="tns:RegionList">
+                        <xsd:annotation>
+                            <xsd:documentation>Список регионов МРФ</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="ArrayOfRegion">
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="unbounded" name="Region" nillable="true" type="tns:Region"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="Region">
+                <xsd:sequence>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="RegionId" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Идентифкатор региона</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="RegionName" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Наименование региона</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="ParentId" nillable="true" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Идентификатор родительского элемента</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:element name="getServiceTypeListResponse" type="tns:getServiceTypeListResponse"/>
+            <xsd:complexType name="getServiceTypeListResponse">
+                <xsd:sequence>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="ServiceTypeList" type="tns:ServiceTypeList">
+                        <xsd:annotation>
+                            <xsd:documentation>Cправочник типов сервисов</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="ArrayOfServiceType">
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="unbounded" name="ServiceTypeList" nillable="true" type="tns:ServiceType"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="ServiceType">
+                <xsd:sequence>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="ServiceTypeId" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Идентификатор элемента справочника</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="ServiceTypeName" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Наименование элемента справочника</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:element name="getTechListResponse" type="tns:getTechListResponse"/>
+            <xsd:complexType name="getTechListResponse">
+                <xsd:sequence>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="TechList" type="tns:TechList">
+                        <xsd:annotation>
+                            <xsd:documentation>Cправочник технологий</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="ArrayOfTech">
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="unbounded" name="Tech" nillable="true" type="tns:Tech"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="Tech">
+                <xsd:sequence>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="TechId" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Идентификатор элемента справочника</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="TechName" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Наименование элемента справочника</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:element name="getWorkerProfileRequest" type="tns:getWorkerProfileRequest"/>
+            <xsd:complexType name="getWorkerProfileRequest">
+                <xsd:sequence>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="WorkerId" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Идентификатор исполнителя в Системе WFM</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:element name="getWorkerProfileResponse" type="tns:getWorkerProfileResponse"/>
+            <xsd:complexType name="getWorkerProfileResponse">
+                <xsd:sequence>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="Surname" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Фамилия работника</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="Name" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Имя работника</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="Patronymic" nillable="true" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Отчество работника</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="ContactPhone" nillable="true" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Контактный телефон</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="LoginWfm" nillable="true" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Логин работника в системе WFM</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="RegionId" nillable="true" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Идентификатор регионального филиала или МРФ. </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="ContractType" nillable="true" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Тип договора (например, ГПХ, трудовой)</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="ContractName" nillable="true" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Номер договора</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="IsLocked" type="xsd:boolean">
+                        <xsd:annotation>
+                            <xsd:documentation>Если true, пользователь не может работать в Технограде с заданиями (нарядами). </xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="Departments" nillable="true" type="tns:DepartmentList">
+                        <xsd:annotation>
+                            <xsd:documentation>Массив подразделений в которых состоит пользователь</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="StartRoute" nillable="true" type="tns:Address">
+                        <xsd:annotation>
+                            <xsd:documentation>Массив подразделений в которых состоит пользователь</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="ArrayOfDepartment">
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="unbounded" name="Department" nillable="true" type="tns:Department"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="Department">
+                <xsd:sequence>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="DepartmentId" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Идентификатор подразделения в системе WFM</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="DepartmentName" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Наименование подразделения в системе WFM с указанием полной иерархической структуры</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="0" maxOccurs="1" name="WorkSites" type="tns:WorkSiteList">
+                        <xsd:annotation>
+                            <xsd:documentation>Участки</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="ArrayOfWorkSite">
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="unbounded" name="WorkSite" nillable="true" type="tns:WorkSite"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="WorkSite">
+                <xsd:sequence>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="WorkSiteId" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Идентификатор участка в системе WFM</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="WorkSiteName" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Наименование участка в системе WFM</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:element name="workerChangePhoneRequest" type="tns:workerChangePhoneRequest"/>
+            <xsd:complexType name="workerChangePhoneRequest">
+                <xsd:sequence>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="WorkerId" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Идентификатор исполнителя в Системе WFM</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                    <xsd:element minOccurs="1" maxOccurs="1" name="Phone" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation>Новый номер телефона исполнителя</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="OrderShortList">
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="unbounded" name="OrderShort" nillable="true" type="tns:OrderShort"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="OrderStatusList">
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="unbounded" name="OrderStatus" nillable="true" type="tns:OrderStatus"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="OrderTypeList">
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="unbounded" name="OrderTypeList" nillable="true" type="tns:OrderType"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="RegionList">
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="unbounded" name="Region" nillable="true" type="tns:Region"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="ServiceTypeList">
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="unbounded" name="ServiceTypeList" nillable="true" type="tns:ServiceType"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="TechList">
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="unbounded" name="Tech" nillable="true" type="tns:Tech"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="DepartmentList">
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="unbounded" name="Department" nillable="true" type="tns:Department"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="WorkSiteList">
+                <xsd:sequence>
+                    <xsd:element minOccurs="0" maxOccurs="unbounded" name="WorkSite" nillable="true" type="tns:WorkSite"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:schema>
+    </wsdl:types>
+    <wsdl:message name="oss_checkWfmUser_InputMessage">
+        <wsdl:part name="checkWfmUserRequest" element="tns:checkWfmUserRequest"/>
+    </wsdl:message>
+    <wsdl:message name="oss_checkWfmUser_OutputMessage">
+        <wsdl:part name="checkWfmUserResponse" element="tns:checkWfmUserResponse"/>
+    </wsdl:message>
+    <wsdl:message name="oss_getOrders_InputMessage">
+        <wsdl:part name="getOrdersRequest" element="tns:getOrdersRequest"/>
+    </wsdl:message>
+    <wsdl:message name="oss_getOrders_OutputMessage">
+        <wsdl:part name="getOrdersResponse" element="tns:getOrdersResponse"/>
+    </wsdl:message>
+    <wsdl:message name="oss_getOrderStatusList_InputMessage"/>
+    <wsdl:message name="oss_getOrderStatusList_OutputMessage">
+        <wsdl:part name="getOrderStatusListResponse" element="tns:getOrderStatusListResponse"/>
+    </wsdl:message>
+    <wsdl:message name="oss_getOrderTypeList_InputMessage"/>
+    <wsdl:message name="oss_getOrderTypeList_OutputMessage">
+        <wsdl:part name="getOrderTypeListResponse" element="tns:getOrderTypeListResponse"/>
+    </wsdl:message>
+    <wsdl:message name="oss_getRegions_InputMessage"/>
+    <wsdl:message name="oss_getRegions_OutputMessage">
+        <wsdl:part name="getRegionsResponse" element="tns:getRegionsResponse"/>
+    </wsdl:message>
+    <wsdl:message name="oss_getServiceTypeList_InputMessage"/>
+    <wsdl:message name="oss_getServiceTypeList_OutputMessage">
+        <wsdl:part name="getServiceTypeListResponse" element="tns:getServiceTypeListResponse"/>
+    </wsdl:message>
+    <wsdl:message name="oss_getTechList_InputMessage"/>
+    <wsdl:message name="oss_getTechList_OutputMessage">
+        <wsdl:part name="getTechListResponse" element="tns:getTechListResponse"/>
+    </wsdl:message>
+    <wsdl:message name="oss_getWorkerProfile_InputMessage">
+        <wsdl:part name="getWorkerProfileRequest" element="tns:getWorkerProfileRequest"/>
+    </wsdl:message>
+    <wsdl:message name="oss_getWorkerProfile_OutputMessage">
+        <wsdl:part name="getWorkerProfileResponse" element="tns:getWorkerProfileResponse"/>
+    </wsdl:message>
+    <wsdl:message name="oss_workerChangePhone_InputMessage">
+        <wsdl:part name="workerChangePhoneRequest" element="tns:workerChangePhoneRequest"/>
+    </wsdl:message>
+    <wsdl:message name="oss_workerChangePhone_OutputMessage"/>
+    <wsdl:portType name="oss">
+        <wsdl:operation name="checkWfmUser">
+            <wsdl:input wsaw:Action="http://tgrad.ru/WfmApi/DigitalInstaller/oss/checkWfmUser" message="tns:oss_checkWfmUser_InputMessage"/>
+            <wsdl:output wsaw:Action="http://tgrad.ru/WfmApi/DigitalInstaller/oss/checkWfmUserResponse" message="tns:oss_checkWfmUser_OutputMessage"/>
+        </wsdl:operation>
+        <wsdl:operation name="getOrders">
+            <wsdl:input wsaw:Action="http://tgrad.ru/WfmApi/DigitalInstaller/oss/getOrders" message="tns:oss_getOrders_InputMessage"/>
+            <wsdl:output wsaw:Action="http://tgrad.ru/WfmApi/DigitalInstaller/oss/getOrdersResponse" message="tns:oss_getOrders_OutputMessage"/>
+        </wsdl:operation>
+        <wsdl:operation name="getOrderStatusList">
+            <wsdl:input wsaw:Action="http://tgrad.ru/WfmApi/DigitalInstaller/oss/getOrderStatusList" message="tns:oss_getOrderStatusList_InputMessage"/>
+            <wsdl:output wsaw:Action="http://tgrad.ru/WfmApi/DigitalInstaller/oss/getOrderStatusListResponse" message="tns:oss_getOrderStatusList_OutputMessage"/>
+        </wsdl:operation>
+        <wsdl:operation name="getOrderTypeList">
+            <wsdl:input wsaw:Action="http://tgrad.ru/WfmApi/DigitalInstaller/oss/getOrderTypeList" message="tns:oss_getOrderTypeList_InputMessage"/>
+            <wsdl:output wsaw:Action="http://tgrad.ru/WfmApi/DigitalInstaller/oss/getOrderTypeListResponse" message="tns:oss_getOrderTypeList_OutputMessage"/>
+        </wsdl:operation>
+        <wsdl:operation name="getRegions">
+            <wsdl:input wsaw:Action="http://tgrad.ru/WfmApi/DigitalInstaller/oss/getRegions" message="tns:oss_getRegions_InputMessage"/>
+            <wsdl:output wsaw:Action="http://tgrad.ru/WfmApi/DigitalInstaller/oss/getRegionsResponse" message="tns:oss_getRegions_OutputMessage"/>
+        </wsdl:operation>
+        <wsdl:operation name="getServiceTypeList">
+            <wsdl:input wsaw:Action="http://tgrad.ru/WfmApi/DigitalInstaller/oss/getServiceTypeList" message="tns:oss_getServiceTypeList_InputMessage"/>
+            <wsdl:output wsaw:Action="http://tgrad.ru/WfmApi/DigitalInstaller/oss/getServiceTypeListResponse" message="tns:oss_getServiceTypeList_OutputMessage"/>
+        </wsdl:operation>
+        <wsdl:operation name="getTechList">
+            <wsdl:input wsaw:Action="http://tgrad.ru/WfmApi/DigitalInstaller/oss/getTechList" message="tns:oss_getTechList_InputMessage"/>
+            <wsdl:output wsaw:Action="http://tgrad.ru/WfmApi/DigitalInstaller/oss/getTechListResponse" message="tns:oss_getTechList_OutputMessage"/>
+        </wsdl:operation>
+        <wsdl:operation name="getWorkerProfile">
+            <wsdl:input wsaw:Action="http://tgrad.ru/WfmApi/DigitalInstaller/oss/getWorkerProfile" message="tns:oss_getWorkerProfile_InputMessage"/>
+            <wsdl:output wsaw:Action="http://tgrad.ru/WfmApi/DigitalInstaller/oss/getWorkerProfileResponse" message="tns:oss_getWorkerProfile_OutputMessage"/>
+        </wsdl:operation>
+        <wsdl:operation name="workerChangePhone">
+            <wsdl:input wsaw:Action="http://tgrad.ru/WfmApi/DigitalInstaller/oss/workerChangePhone" message="tns:oss_workerChangePhone_InputMessage"/>
+            <wsdl:output wsaw:Action="http://tgrad.ru/WfmApi/DigitalInstaller/oss/workerChangePhoneResponse" message="tns:oss_workerChangePhone_OutputMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="http" type="tns:oss">
+        <wsp:PolicyReference URI="#http_policy"/>
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="checkWfmUser">
+            <soap:operation soapAction="http://tgrad.ru/WfmApi/DigitalInstaller/oss/checkWfmUser" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getOrders">
+            <soap:operation soapAction="http://tgrad.ru/WfmApi/DigitalInstaller/oss/getOrders" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getOrderStatusList">
+            <soap:operation soapAction="http://tgrad.ru/WfmApi/DigitalInstaller/oss/getOrderStatusList" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getOrderTypeList">
+            <soap:operation soapAction="http://tgrad.ru/WfmApi/DigitalInstaller/oss/getOrderTypeList" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getRegions">
+            <soap:operation soapAction="http://tgrad.ru/WfmApi/DigitalInstaller/oss/getRegions" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getServiceTypeList">
+            <soap:operation soapAction="http://tgrad.ru/WfmApi/DigitalInstaller/oss/getServiceTypeList" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getTechList">
+            <soap:operation soapAction="http://tgrad.ru/WfmApi/DigitalInstaller/oss/getTechList" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getWorkerProfile">
+            <soap:operation soapAction="http://tgrad.ru/WfmApi/DigitalInstaller/oss/getWorkerProfile" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="workerChangePhone">
+            <soap:operation soapAction="http://tgrad.ru/WfmApi/DigitalInstaller/oss/workerChangePhone" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="http_anonymous" type="tns:oss">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="checkWfmUser">
+            <soap:operation soapAction="http://tgrad.ru/WfmApi/DigitalInstaller/oss/checkWfmUser" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getOrders">
+            <soap:operation soapAction="http://tgrad.ru/WfmApi/DigitalInstaller/oss/getOrders" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getOrderStatusList">
+            <soap:operation soapAction="http://tgrad.ru/WfmApi/DigitalInstaller/oss/getOrderStatusList" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getOrderTypeList">
+            <soap:operation soapAction="http://tgrad.ru/WfmApi/DigitalInstaller/oss/getOrderTypeList" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getRegions">
+            <soap:operation soapAction="http://tgrad.ru/WfmApi/DigitalInstaller/oss/getRegions" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getServiceTypeList">
+            <soap:operation soapAction="http://tgrad.ru/WfmApi/DigitalInstaller/oss/getServiceTypeList" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getTechList">
+            <soap:operation soapAction="http://tgrad.ru/WfmApi/DigitalInstaller/oss/getTechList" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getWorkerProfile">
+            <soap:operation soapAction="http://tgrad.ru/WfmApi/DigitalInstaller/oss/getWorkerProfile" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="workerChangePhone">
+            <soap:operation soapAction="http://tgrad.ru/WfmApi/DigitalInstaller/oss/workerChangePhone" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="http_basic" type="tns:oss">
+        <wsp:PolicyReference URI="#http_basic_policy"/>
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="checkWfmUser">
+            <soap:operation soapAction="http://tgrad.ru/WfmApi/DigitalInstaller/oss/checkWfmUser" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getOrders">
+            <soap:operation soapAction="http://tgrad.ru/WfmApi/DigitalInstaller/oss/getOrders" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getOrderStatusList">
+            <soap:operation soapAction="http://tgrad.ru/WfmApi/DigitalInstaller/oss/getOrderStatusList" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getOrderTypeList">
+            <soap:operation soapAction="http://tgrad.ru/WfmApi/DigitalInstaller/oss/getOrderTypeList" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getRegions">
+            <soap:operation soapAction="http://tgrad.ru/WfmApi/DigitalInstaller/oss/getRegions" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getServiceTypeList">
+            <soap:operation soapAction="http://tgrad.ru/WfmApi/DigitalInstaller/oss/getServiceTypeList" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getTechList">
+            <soap:operation soapAction="http://tgrad.ru/WfmApi/DigitalInstaller/oss/getTechList" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="getWorkerProfile">
+            <soap:operation soapAction="http://tgrad.ru/WfmApi/DigitalInstaller/oss/getWorkerProfile" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="workerChangePhone">
+            <soap:operation soapAction="http://tgrad.ru/WfmApi/DigitalInstaller/oss/workerChangePhone" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="oss">
+        <wsdl:port name="http" binding="tns:http">
+            <soap:address location="http://ktpsrv.tgrad2005.tgrad.ru/ctkdev/DatumNode.svc"/>
+        </wsdl:port>
+        <wsdl:port name="http_anonymous" binding="tns:http_anonymous">
+            <soap:address location="http://ktpsrv.tgrad2005.tgrad.ru/ctkdev/DatumNode.svc/a"/>
+        </wsdl:port>
+        <wsdl:port name="http_basic" binding="tns:http_basic">
+            <soap:address location="http://ktpsrv.tgrad2005.tgrad.ru/ctkdev/DatumNode.svc/basic"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

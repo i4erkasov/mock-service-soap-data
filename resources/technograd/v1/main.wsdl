@@ -1,0 +1,489 @@
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:tns="http://localhost:8900/siberia/technograd/1/main/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+                  xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="TechnogradService"
+                  targetNamespace="http://localhost:8900/siberia/technograd/1/main/">
+    <wsdl:documentation>Definition for a web service called TechnogradService,
+        which can be used to add or retrieve books from a collection.
+    </wsdl:documentation>
+
+    <!--
+        The `types` element defines the data types (XML elements)
+        that are used by the web service.
+     -->
+    <wsdl:types>
+        <xsd:schema targetNamespace="http://localhost:8900/siberia/technograd/1/main/">
+            <xsd:element name="getOrders">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="DEPARTAMEN_ID_LIST" type="xsd:string" />
+                        <xsd:element name="WORKER_ID" type="xsd:string" />
+                        <xsd:element name="START_DATE" type="xsd:string" />
+                        <xsd:element name="END_DATE" type="xsd:string" />
+                        <xsd:element name="TECH_ID_LIST" type="xsd:string" />
+                        <xsd:element name="ORDER_TYPE_ID_LIST" type="xsd:string" />
+                        <xsd:element name="SERVICE_TYPE_ID_LIST" type="xsd:string" />
+                        <xsd:element name="ORDER_STATUS_ID" type="xsd:string" />
+                        <xsd:element name="ORDER_CLOSE_REASON_ID" type="xsd:string" />
+                        <xsd:element name="DEFERRED" type="xsd:string" />
+                        <xsd:element name="ASSIGNED" type="xsd:string" />
+                        <xsd:element name="READY_VISIT" type="xsd:string" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="getOrdersResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="ORDERS_SHORT" minOccurs="0" maxOccurs="unbounded">
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:element name="ORDER_ID" type="xsd:string"></xsd:element>
+                                    <xsd:element name="ORDER_NAME" type="xsd:string"></xsd:element>
+                                    <xsd:element name="ADDRESS" minOccurs="0" maxOccurs="unbounded">
+                                        <xsd:complexType>
+                                            <xsd:sequence>
+                                                <xsd:element name="ORPON_ID" type="xsd:string"></xsd:element>
+                                                <xsd:element name="ADDRESS_TEXT" type="xsd:string"></xsd:element>
+                                                <xsd:element name="LOCATION" type="xsd:string"></xsd:element>
+                                                <xsd:element name="BUILDING_TYPE" type="xsd:string"></xsd:element>
+                                                <xsd:element name="COMMENT_ADDRESS" type="xsd:string"></xsd:element>
+                                            </xsd:sequence>
+                                        </xsd:complexType>
+                                    </xsd:element>
+                                    <xsd:element name="TECH_ID" type="xsd:string"></xsd:element>
+                                    <xsd:element name="ORDER_TYPE_ID" type="xsd:string"></xsd:element>
+                                    <xsd:element name="SERVICE_TYPE_ID_LIST" type="xsd:string"></xsd:element>
+                                    <xsd:element name="ORDER_STATUS_ID" type="xsd:string"></xsd:element>
+                                    <xsd:element name="ORDER_CLOSE_REASON_ID" type="xsd:string"></xsd:element>
+                                    <xsd:element name="START_INTERVAL_VISITE" type="xsd:string"></xsd:element>
+                                    <xsd:element name="END_INTERVAL_VISITE" type="xsd:string"></xsd:element>
+                                    <xsd:element name="CRM_REQUEST_NUMBER_LIST" type="xsd:string"></xsd:element>
+                                    <xsd:element name="CONTROL_TIME_ORDER" type="xsd:string"></xsd:element>
+                                    <xsd:element name="CONTROL_TIME_REQUEST" type="xsd:string"></xsd:element>
+                                    <xsd:element name="RESTRICTION_TEXT" type="xsd:string"></xsd:element>
+                                    <xsd:element name="DEFERRED" type="xsd:string"></xsd:element>
+                                    <xsd:element name="ASSIGNED" type="xsd:string"></xsd:element>
+                                    <xsd:element name="READY_VISIT" type="xsd:string"></xsd:element>
+                                    <xsd:element name="CLIENT" minOccurs="0" maxOccurs="unbounded">
+                                        <xsd:complexType>
+                                            <xsd:sequence>
+                                                <xsd:element name="TYPE_CLIENT" type="xsd:string"></xsd:element>
+                                                <xsd:element name="NLS" type="xsd:string"></xsd:element>
+                                                <xsd:element name="CONTACT_NAME" type="xsd:string"></xsd:element>
+                                                <xsd:element name="CONTACT_PHONE" type="xsd:string"></xsd:element>
+                                                <xsd:element name="MANAGER_NAME" type="xsd:string"></xsd:element>
+                                                <xsd:element name="MANAGER_PHONE" type="xsd:string"></xsd:element>
+                                                <xsd:element name="VIP" type="xsd:string"></xsd:element>
+                                                <xsd:element name="ORG_NAME" type="xsd:string"></xsd:element>
+                                                <xsd:element name="CONTRACT" type="xsd:string"></xsd:element>
+                                            </xsd:sequence>
+                                        </xsd:complexType>
+                                    </xsd:element>
+                                </xsd:sequence>
+                            </xsd:complexType>
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="workerChangePhoneRequest">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="WORKER_ID" type="xsd:string" />
+                        <xsd:element name="PHONE" type="xsd:string" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="workerChangePhoneResponse">
+                <xsd:complexType />
+            </xsd:element>
+
+            <xsd:element name="checkWfmUserRequest">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="LOGIN" type="xsd:string" />
+                        <xsd:element name="Password" type="xsd:string" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="checkWfmUserResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="REGION_ID" type="xsd:string"></xsd:element>
+                        <xsd:element name="WFM_WORKER_ID" type="xsd:string"></xsd:element>
+                        <xsd:element name="MOBILE_PHONE" type="xsd:string"></xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="getRegions">
+                <xsd:complexType />
+            </xsd:element>
+            <xsd:element name="getRegionsResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="Region" minOccurs="0" maxOccurs="unbounded">
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:element name="REGION_ID" type="xsd:string"></xsd:element>
+                                    <xsd:element name="REGION_NAME" type="xsd:string"></xsd:element>
+                                    <xsd:element name="PARENT_ID" type="xsd:string"></xsd:element>
+                                </xsd:sequence>
+                            </xsd:complexType>
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="getTechList">
+                <xsd:complexType />
+            </xsd:element>
+            <xsd:element name="getTechListResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="TechList" minOccurs="0" maxOccurs="unbounded">
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:element name="TECH_ID" type="xsd:string"></xsd:element>
+                                    <xsd:element name="TECH_NAME" type="xsd:string"></xsd:element>
+                                </xsd:sequence>
+                            </xsd:complexType>
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="getOrderTypeList">
+                <xsd:complexType />
+            </xsd:element>
+            <xsd:element name="getOrderTypeListResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="OrderTypeList" minOccurs="0" maxOccurs="unbounded">
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:element name="ORDER_TYPE_ID" type="xsd:string"></xsd:element>
+                                    <xsd:element name="ORDER_TYPE_NAME" type="xsd:string"></xsd:element>
+                                </xsd:sequence>
+                            </xsd:complexType>
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="getServiceTypeList">
+                <xsd:complexType />
+            </xsd:element>
+            <xsd:element name="getServiceTypeListResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="ServiceTypeList" minOccurs="0" maxOccurs="unbounded">
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:element name="SERVICE_TYPE_ID" type="xsd:string"></xsd:element>
+                                    <xsd:element name="SERVICE_TYPE_NAME" type="xsd:string"></xsd:element>
+                                </xsd:sequence>
+                            </xsd:complexType>
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="getOrderStatusList">
+                <xsd:complexType />
+            </xsd:element>
+            <xsd:element name="getOrderStatusListResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="OrderStatusList" minOccurs="0" maxOccurs="unbounded">
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:element name="ORDER_STATUS_ID" type="xsd:string"></xsd:element>
+                                    <xsd:element name="ORDER_STATUS_NAME" type="xsd:string"></xsd:element>
+                                </xsd:sequence>
+                            </xsd:complexType>
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="getWorkerProfile">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="WORKER_ID" type="xsd:string" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="getWorkerProfileResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="SURNAME" type="xsd:string"></xsd:element>
+                        <xsd:element name="NAME" type="xsd:string"></xsd:element>
+                        <xsd:element name="PATRONYMIC" type="xsd:string"></xsd:element>
+                        <xsd:element name="CONTACT_PHONE" type="xsd:string"></xsd:element>
+                        <xsd:element name="LOGIN_WFM" type="xsd:string"></xsd:element>
+                        <xsd:element name="REGION_ID" type="xsd:string"></xsd:element>
+                        <xsd:element name="CONTRACT_TYPE" type="xsd:string"></xsd:element>
+                        <xsd:element name="CONTRACT_NAME" type="xsd:string"></xsd:element>
+                        <xsd:element name="IS_LOCKED" type="xsd:boolean"></xsd:element>
+                        <xsd:element name="DEPARTAMENTS" minOccurs="0" maxOccurs="unbounded">
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:element name="DEPARTAMENT_ID" type="xsd:string"></xsd:element>
+                                    <xsd:element name="DEPARTAMENT_NAME" type="xsd:string"></xsd:element>
+                                    <xsd:element name="WORKSITES" minOccurs="0" maxOccurs="unbounded">
+                                        <xsd:complexType>
+                                            <xsd:sequence>
+                                                <xsd:element name="WORKSITE_ID" type="xsd:string"></xsd:element>
+                                                <xsd:element name="WORKSITE_NAME" type="xsd:string"></xsd:element>
+                                            </xsd:sequence>
+                                        </xsd:complexType>
+                                    </xsd:element>
+                                </xsd:sequence>
+                            </xsd:complexType>
+                        </xsd:element>
+                        <xsd:element name="START_ROUTE" minOccurs="0" maxOccurs="unbounded">
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:element name="LATITUDE" type="xsd:string"></xsd:element>
+                                    <xsd:element name="LONGITUDE" type="xsd:string"></xsd:element>
+                                </xsd:sequence>
+                            </xsd:complexType>
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:schema>
+    </wsdl:types>
+
+
+    <!--
+        A wsdl `message` element is used to define a message
+        exchanged between a web service, consisting of zero
+        or more `part`s.
+     -->
+    <wsdl:message name="getOrders">
+        <wsdl:part name="parameters" element="tns:getOrders"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getOrdersResponse">
+        <wsdl:part name="parameters" element="tns:getOrdersResponse"></wsdl:part>
+    </wsdl:message>
+
+    <wsdl:message name="workerChangePhoneRequest">
+        <wsdl:part name="parameters" element="tns:workerChangePhoneRequest"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="workerChangePhoneResponse">
+        <wsdl:part name="parameters" element="tns:workerChangePhoneResponse"></wsdl:part>
+    </wsdl:message>
+
+    <wsdl:message name="checkWfmUserRequest">
+        <wsdl:part name="parameters" element="tns:checkWfmUserRequest"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="checkWfmUserResponse">
+        <wsdl:part name="parameters" element="tns:checkWfmUserResponse"></wsdl:part>
+    </wsdl:message>
+
+    <wsdl:message name="getRegions">
+        <wsdl:part name="parameters" element="tns:getRegions"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getRegionsResponse">
+        <wsdl:part name="parameters" element="tns:getRegionsResponse"></wsdl:part>
+    </wsdl:message>
+
+    <wsdl:message name="getTechList">
+        <wsdl:part name="parameters" element="tns:getTechList"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getTechListResponse">
+        <wsdl:part name="parameters" element="tns:getTechListResponse"></wsdl:part>
+    </wsdl:message>
+
+    <wsdl:message name="getOrderTypeList">
+        <wsdl:part name="parameters" element="tns:getOrderTypeList"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getOrderTypeListResponse">
+        <wsdl:part name="parameters" element="tns:getOrderTypeListResponse"></wsdl:part>
+    </wsdl:message>
+
+    <wsdl:message name="getServiceTypeList">
+        <wsdl:part name="parameters" element="tns:getServiceTypeList"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getServiceTypeListResponse">
+        <wsdl:part name="parameters" element="tns:getServiceTypeListResponse"></wsdl:part>
+    </wsdl:message>
+
+    <wsdl:message name="getOrderStatusList">
+        <wsdl:part name="parameters" element="tns:getOrderStatusList"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getOrderStatusListResponse">
+        <wsdl:part name="parameters" element="tns:getOrderStatusListResponse"></wsdl:part>
+    </wsdl:message>
+
+    <wsdl:message name="getWorkerProfile">
+        <wsdl:part name="parameters" element="tns:getWorkerProfile"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getWorkerProfileResponse">
+        <wsdl:part name="parameters" element="tns:getWorkerProfileResponse"></wsdl:part>
+    </wsdl:message>
+
+    <!--
+        A WSDL `portType` is used to combine multiple `message`s
+        (e.g. input, output) into a single operation.
+
+        Here we define three synchronous (input/output) operations
+        and the `message`s that must be used for each.
+     -->
+    <wsdl:portType name="TechnogradService">
+        <wsdl:operation name="getOrders">
+            <wsdl:input message="tns:getOrders" />
+            <wsdl:output message="tns:getOrdersResponse" />
+        </wsdl:operation>
+
+        <wsdl:operation name="workerChangePhone">
+            <wsdl:input message="tns:workerChangePhoneRequest" />
+            <wsdl:output message="tns:workerChangePhoneResponse" />
+        </wsdl:operation>
+
+        <wsdl:operation name="checkWfmUser">
+            <wsdl:input message="tns:checkWfmUserRequest" />
+            <wsdl:output message="tns:checkWfmUserResponse" />
+        </wsdl:operation>
+
+        <wsdl:operation name="getRegions">
+            <wsdl:input message="tns:getRegions"></wsdl:input>
+            <wsdl:output message="tns:getRegionsResponse"></wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="getTechList">
+            <wsdl:input message="tns:getTechList"></wsdl:input>
+            <wsdl:output message="tns:getTechListResponse"></wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="getOrderTypeList">
+            <wsdl:input message="tns:getOrderTypeList"></wsdl:input>
+            <wsdl:output message="tns:getOrderTypeListResponse"></wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="getServiceTypeList">
+            <wsdl:input message="tns:getServiceTypeList"></wsdl:input>
+            <wsdl:output message="tns:getServiceTypeListResponse"></wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="getOrderStatusList">
+            <wsdl:input message="tns:getOrderStatusList"></wsdl:input>
+            <wsdl:output message="tns:getOrderStatusListResponse"></wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="getWorkerProfile">
+            <wsdl:input message="tns:getWorkerProfile"></wsdl:input>
+            <wsdl:output message="tns:getWorkerProfileResponse"></wsdl:output>
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <!--
+        The `binding` element defines exactly how each
+        `operation` will take place over the network.
+        In this case, we are using SOAP.
+     -->
+    <wsdl:binding name="TechnogradServiceSOAP" type="tns:TechnogradService">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+
+        <wsdl:operation name="getOrders">
+            <soap:operation soapAction="http://localhost:8900/siberia/technograd/1/main/" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="workerChangePhone">
+            <soap:operation soapAction="http://localhost:8900/siberia/technograd/1/main/" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="checkWfmUser">
+            <soap:operation soapAction="http://localhost:8900/siberia/technograd/1/main/" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="getRegions">
+            <soap:operation soapAction="http://localhost:8900/siberia/technograd/1/main/" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="getTechList">
+            <soap:operation soapAction="http://localhost:8900/siberia/technograd/1/main/" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="getOrderTypeList">
+            <soap:operation soapAction="http://localhost:8900/siberia/technograd/1/main/" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="getServiceTypeList">
+            <soap:operation soapAction="http://localhost:8900/siberia/technograd/1/main/" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="getOrderStatusList">
+            <soap:operation soapAction="http://localhost:8900/siberia/technograd/1/main/" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="getWorkerProfile">
+            <soap:operation soapAction="http://localhost:8900/siberia/technograd/1/main/" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+
+    <!--
+        The `service` element finally says where the service
+        can be accessed from - in other words, its endpoint.
+     -->
+    <wsdl:service name="TechnogradService">
+        <wsdl:port binding="tns:TechnogradServiceSOAP" name="TechnogradServiceSOAP">
+            <soap:address location="http://localhost:8900/siberia/technograd/1/main/" />
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>
