@@ -8,6 +8,12 @@ use DI\ContainerBuilder;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Slim\Factory\AppFactory;
 
+if (false === in_array(\PHP_SAPI, ['cli', 'phpdbg', 'embed'], true)) {
+    echo 'Warning: The console should be invoked via the CLI version of PHP, not the '.\PHP_SAPI.' SAPI'.\PHP_EOL;
+}
+
+define('APP_DIR', dirname(dirname(__FILE__)));
+
 $loader = require_once dirname(__DIR__) . '/vendor/autoload.php';
 
 $loader->add('Documents', __DIR__);

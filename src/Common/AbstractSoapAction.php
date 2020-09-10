@@ -2,18 +2,12 @@
 
 namespace App\Common;
 
-use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Exception\HttpBadRequestException;
 
-abstract class AbstractSoapAction
+abstract class AbstractSoapAction extends AbstractController
 {
-    /**
-     * @var ContainerInterface
-     */
-    protected ContainerInterface $container;
-
     /**
      * @var Request
      */
@@ -28,11 +22,6 @@ abstract class AbstractSoapAction
      * @var array
      */
     protected ?array $args;
-
-    public function __construct(ContainerInterface $container)
-    {
-        $this->container = $container;
-    }
 
     /**
      * @param Request  $request

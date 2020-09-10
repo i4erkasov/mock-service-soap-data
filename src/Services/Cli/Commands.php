@@ -6,6 +6,10 @@ use Psr\Container\ContainerInterface;
 
 abstract class Commands
 {
+    public const SUCCESS = 0;
+
+    public const ERROR = 1;
+
     protected ContainerInterface $container;
 
     protected array $argv;

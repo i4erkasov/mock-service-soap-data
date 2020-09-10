@@ -4,45 +4,34 @@ namespace App\Commands;
 
 use App\Services\Cli\Commands;
 use App\Services\Fixtures\FixtureService;
+use App\Traits\LockableTrait;
 
 class FixtureCommand extends Commands
 {
+    use LockableTrait;
+
     protected function up()
     {
+        set_time_limit(0);
+
+        if ($this->lock(basename(__FILE__, '.php'))) {
+            return Commands::SUCCESS;
+        }
+
         $migrationService = $this->container->get(FixtureService::class);
 
-        $migrationService->up();
-    }
+        echo "\e[34m====================== Fixtures Run ======================\e[0m" . PHP_EOL;
+        echo PHP_EOL;
 
-    protected function start()
-    {
-        $file = dirname(__DIR__) . '/../var/cache/fixtures-status.json';
+        $completed = $migrationService->up();
 
-        if (!file_exists($file)) {
-            return;
+        foreach ($completed as $item) {
+            echo "> \e[36m{$item}\e[0m\e[32m  done\e[0m" . PHP_EOL;
         }
 
-        $content = json_decode(file_get_contents($file), true);
+        echo PHP_EOL;
+        echo "\e[34m====================== Fixtures Done =====================\e[0m" . PHP_EOL;
 
-        if ($content['status'] != 'wait') {
-            return;
-        }
-
-        try {
-            $migrationService = $this->container->get(FixtureService::class);
-
-            $migrationService->up();
-
-            file_put_contents($file, $json = json_encode([
-                'status'  => 'done',
-                'message' => 'Fixtures init done',
-            ]));
-
-        } catch (\Exception $ex) {
-            file_put_contents($file, json_encode([
-                'status'  => 'error',
-                'message' => $ex->getMessage(),
-            ]));
-        }
+        return Commands::SUCCESS;
     }
 }

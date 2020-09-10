@@ -6,6 +6,8 @@ use DI\ContainerBuilder;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Slim\Factory\AppFactory;
 
+define('APP_DIR', dirname(dirname(__FILE__)));
+
 $loader = require_once '../vendor/autoload.php';
 
 $loader->add('Documents', __DIR__);

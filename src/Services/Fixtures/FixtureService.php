@@ -2,9 +2,7 @@
 
 namespace App\Services\Fixtures;
 
-use Doctrine\Persistence\Mapping\Driver\PHPDriver;
 use Psr\Container\ContainerInterface;
-use function DI\string;
 
 class FixtureService
 {
@@ -12,19 +10,14 @@ class FixtureService
 
     private ContainerInterface $container;
 
-    private array $files = [];
-
     public function __construct(ContainerInterface $container, FixtureConfig $config)
     {
         $this->container = $container;
         $this->config    = $config;
     }
 
-    public function up()
+    public function up(): array
     {
-        echo "\e[34m====================== Fixtures Run ======================\e[0m" . PHP_EOL;
-        echo PHP_EOL;
-
         $fixtures = $this->getFixtures($this->config->getPath());
 
         foreach ($fixtures as $fixture) {
@@ -33,35 +26,19 @@ class FixtureService
             if ($object instanceof Fixture) {
                 $object->up();
 
-                echo "> \e[36m".(string)$object . "\e[0m\e[32m  done\e[0m" . PHP_EOL;
+                $completed[] = (string)$object;
             }
         }
 
-        echo PHP_EOL;
-        echo "\e[34m====================== Fixtures Done =====================\e[0m". PHP_EOL;
-
-        return;
+        return $completed ?? [];
     }
 
     private function getFixtures(string $path): array
     {
-        $files = self::scandir($path);
+        $files = self::scan($path);
 
-        if ($files) {
-            array_map(function ($file) use ($files) {
-                if (is_dir($file)) {
-                    array_map([$this, 'getFixtures'], [$file . '/']);
-                }
-
-                if (is_file($file)) {
-                    $this->files[] = $file;
-                }
-
-            }, $files);
-
-            foreach ($this->files as $file) {
-                $fixtures[] = $this->getClass($file);
-            }
+        foreach ($files as $file) {
+            $fixtures[] = $this->getClass($file->getRealPath());
         }
 
         return $fixtures ?? [];
@@ -69,8 +46,8 @@ class FixtureService
 
     private function getClass($filePath)
     {
-        $contents          = file_get_contents($filePath);
-        $namespace         = $class = "";
+        $contents         = file_get_contents($filePath);
+        $namespace        = $class = "";
         $gettingNamespace = $gettingClass = false;
 
         foreach (token_get_all($contents) as $token) {
@@ -105,22 +82,18 @@ class FixtureService
     }
 
     /**
-     * @param $path
+     * @param $dir
      *
-     * @return array
+     * @return \SplFileInfo[]
      */
-    private static function scandir(string $path): array
+    private static function scan(string $dir): array
     {
-        $files = scandir($path);
+        $iterator = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator(
+                $dir, \RecursiveDirectoryIterator::SKIP_DOTS
+            ),
+        );
 
-        foreach ($files as $key => $file) {
-            if (in_array($file, ['.', '..'])) {
-                unset($files[$key]);
-            } else {
-                $result[] = $path . $file;
-            }
-        }
-
-        return $result ?? [];
+        return iterator_to_array($iterator, false);
     }
 }
