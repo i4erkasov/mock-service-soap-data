@@ -28,8 +28,9 @@ abstract class AbstractSoapAction extends AbstractController
      * @param Response $response
      * @param          $args
      *
-     * @return Response
      * @throws \SoapFault
+     * @throws \Exception
+     * @return Response
      */
     public function __invoke(Request $request, Response $response, $args): Response
     {

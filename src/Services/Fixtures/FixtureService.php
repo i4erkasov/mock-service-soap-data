@@ -2,6 +2,8 @@
 
 namespace App\Services\Fixtures;
 
+use App\Utils\Directory;
+use App\Utils\PhpFileClass;
 use Psr\Container\ContainerInterface;
 
 class FixtureService
@@ -10,12 +12,21 @@ class FixtureService
 
     private ContainerInterface $container;
 
+    /**
+     * FixtureService constructor.
+     *
+     * @param ContainerInterface $container
+     * @param FixtureConfig      $config
+     */
     public function __construct(ContainerInterface $container, FixtureConfig $config)
     {
         $this->container = $container;
         $this->config    = $config;
     }
 
+    /**
+     * @return array
+     */
     public function up(): array
     {
         $fixtures = $this->getFixtures($this->config->getPath());
@@ -33,67 +44,17 @@ class FixtureService
         return $completed ?? [];
     }
 
+    /**
+     * @param string $path
+     *
+     * @return array
+     */
     private function getFixtures(string $path): array
     {
-        $files = self::scan($path);
-
-        foreach ($files as $file) {
-            $fixtures[] = $this->getClass($file->getRealPath());
+        foreach (Directory::scan($path) as $file) {
+            $fixtures[] = PhpFileClass::getClassName($file->getRealPath());
         }
 
         return $fixtures ?? [];
-    }
-
-    private function getClass($filePath)
-    {
-        $contents         = file_get_contents($filePath);
-        $namespace        = $class = "";
-        $gettingNamespace = $gettingClass = false;
-
-        foreach (token_get_all($contents) as $token) {
-            if (is_array($token) && $token[0] == T_NAMESPACE) {
-                $gettingNamespace = true;
-            }
-
-            if (is_array($token) && $token[0] == T_CLASS) {
-                $gettingClass = true;
-            }
-
-            if ($gettingNamespace === true) {
-                if (is_array($token) && in_array($token[0], [T_STRING, T_NS_SEPARATOR])) {
-                    $namespace .= $token[1];
-                } else {
-                    if ($token === ';') {
-                        $gettingNamespace = false;
-                    }
-                }
-            }
-
-            if ($gettingClass === true) {
-                if (is_array($token) && $token[0] == T_STRING) {
-                    $class = $token[1];
-
-                    break;
-                }
-            }
-        }
-
-        return $namespace ? $namespace . '\\' . $class : $class;
-    }
-
-    /**
-     * @param $dir
-     *
-     * @return \SplFileInfo[]
-     */
-    private static function scan(string $dir): array
-    {
-        $iterator = new \RecursiveIteratorIterator(
-            new \RecursiveDirectoryIterator(
-                $dir, \RecursiveDirectoryIterator::SKIP_DOTS
-            ),
-        );
-
-        return iterator_to_array($iterator, false);
     }
 }

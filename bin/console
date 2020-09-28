@@ -20,7 +20,7 @@ $loader->add('Documents', __DIR__);
 
 AnnotationRegistry::registerLoader([$loader, 'loadClass']);
 
-$dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
+$dotenv = Dotenv\Dotenv::createUnsafeImmutable(dirname(__DIR__));
 $dotenv->load();
 
 /** @var ContainerBuilder $containerBuilder */

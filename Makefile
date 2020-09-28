@@ -42,3 +42,7 @@ docker-top:
 composer-install:
 	export uid=$(uid) gid=$(gid); \
 	docker-compose -f ./docker-compose-local.yml run --rm php-fpm composer install
+
+fixture-up:
+	export uid=$(uid) gid=$(gid); \
+	docker-compose -f ./docker-compose-local.yml run --rm php-fpm php bin/console fixture up
