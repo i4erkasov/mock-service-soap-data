@@ -1,4 +1,4 @@
-Mock external SOAP service (Севрис для заглушек внешних сервисов soap)
+Mock external SOAP service (Севрис для заглушек внешних сервисов SOAP)
 ====================
 
 ### Для запуска необходим docker и docker-compose
